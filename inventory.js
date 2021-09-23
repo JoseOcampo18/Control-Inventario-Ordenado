@@ -7,6 +7,7 @@ export default class Inventory{
     add(product){
         if(this.search(product._getCode()) == null && this._inventory.length < 20){
             this._inventory.push(product);
+            this._order(this._inventory);            
         }
         else 
             return null;
@@ -60,4 +61,16 @@ export default class Inventory{
         return -1;
     }
 
+    _order(items){
+        let length = items.length;  
+            for (let i = 0; i < length; i++) { 
+                for (let j = 0; j < (length - i - 1); j++) { 
+                        if(items[j]._getCode() > items[j+1]._getCode()) {
+                                let tmp = items[j]; 
+                                items[j] = items[j+1]; 
+                                items[j+1] = tmp; 
+                    }
+                }        
+            }
+    }
 }

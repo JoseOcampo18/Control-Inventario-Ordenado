@@ -29,6 +29,7 @@ class App{
 
         let product = new Product(code, name, quantity, cost);
         this._inventory.add(product);
+        console.log(this._inventory);
     }
 
     _deleteProduct = () => {

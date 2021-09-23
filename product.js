@@ -1,7 +1,7 @@
 export default class Product{
 
     constructor(code, name, quantity, cost){
-        this._code = code;
+        this._code = parseInt(code);
         this._name = name;
         this._quantity = quantity;
         this._cost = cost;

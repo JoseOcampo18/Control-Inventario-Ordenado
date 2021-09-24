@@ -20,11 +20,11 @@ export default class Product{
     }
 
     _getCost(){
-        return this.cost;
+        return this._cost;
     }
 
     _getTotalCost(){
-        return this.cost * this._quantity;
+        return this._cost * this._quantity;
     }
 
 }

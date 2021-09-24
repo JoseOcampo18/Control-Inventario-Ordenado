@@ -9,8 +9,9 @@ export default class Inventory{
             this._inventory.push(product);
             this._order(this._inventory);            
         }
-        else 
+        else {
             return null;
+        }
     }
 
     delete(code){

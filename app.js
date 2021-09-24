@@ -1,9 +1,12 @@
 import Inventory from "./inventory.js";
 import Product from "./product.js";
+import Ui from "./ui.js";
 
 class App{
     constructor(){
         this._inventory = new Inventory();
+        this._interfaz = new Ui();
+        this._interfaz._createTable();
 
         let btnAdd = document.getElementById('btnAdd');
         btnAdd.addEventListener('click',this._addProduct);
@@ -28,30 +31,52 @@ class App{
         let cost = document.getElementById('txtCost').value;
 
         let product = new Product(code, name, quantity, cost);
-        this._inventory.add(product);
-        console.log(this._inventory);
+        let result = this._inventory.add(product);
+        this._interfaz._listProduct(this._inventory);
+
+        if(result === null){
+            window.alert("Este producto ya existe, o tu inventario está lleno");
+        }
     }
 
     _deleteProduct = () => {
         let code = document.getElementById('txtCode').value; 
 
-        this._inventory.delete(code);
+        let result = this._inventory.delete(code);
+
+        if(result === null){
+            window.alert("Este producto no existe");
+        }
+        else{
+            window.alert("El producto existe, y fue eliminado");
+        }
+
+        this._interfaz._listProduct(this._inventory);
     }
 
     _findProduct = () => {
         let code = document.getElementById('txtCode').value; 
 
-        this._inventory.search(code);
+        this._interfaz._resetTable();
+        let result = this._inventory.search(code);
+
+        if(result === null){
+            window.alert("Este producto no existe");
+            this._interfaz._listProduct(this._inventory);
+        }
+
+        else{
+            this._interfaz._addToTable(result);
+        }
     }
 
     _listProduct = () => {
-        console.log(this._inventory.list());
+        this._interfaz._listProduct(this._inventory);
     }
 
     _invertProduct = () => {
-        console.log(this._inventory.invertList());
+        this._interfaz._invertProduct(this._inventory);
     }
-
 
 }
 

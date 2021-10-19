@@ -46,17 +46,27 @@ export default class Ui{
     _listProduct(inventory){   
         this._resetTable();
 
-        inventory.list().forEach((p) => {
-            this._addToTable(p);
-        });
+        let aux = inventory.list();
+
+        this._addToTable(aux);
+
+        while(aux._getNext() != null){
+            aux = aux._getNext();
+            this._addToTable(aux);
+        }
     }
 
     _invertProduct(inventory){
         this._resetTable();
         
-        inventory.invertList().forEach((p) => {
-            this._addToTable(p);
-        });
+        let aux = inventory.invertList();
+
+        this._addToTable(aux);
+
+        while(aux._getNext() != null){
+            aux = aux._getNext();
+            this._addToTable(aux);
+        }
     }
 
 }

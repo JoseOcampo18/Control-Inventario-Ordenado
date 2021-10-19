@@ -1,10 +1,11 @@
 export default class Product{
 
     constructor(code, name, quantity, cost){
-        this._code = parseInt(code);
+        this._code = code;
         this._name = name;
         this._quantity = quantity;
         this._cost = cost;
+        this._next = null;
     }
 
     _getCode(){
@@ -25,6 +26,14 @@ export default class Product{
 
     _getTotalCost(){
         return this._cost * this._quantity;
+    }
+
+    _getNext(){
+        return this._next;
+    }
+
+    _setNext(newNext){
+        this._next = newNext;
     }
 
 }

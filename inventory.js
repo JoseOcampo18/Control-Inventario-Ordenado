@@ -1,77 +1,104 @@
 export default class Inventory{
 
     constructor() {
-        this._inventory = new Array();
+        this._start = null;
     }
 
     add(product){
-        if(this.search(product._getCode()) == null && this._inventory.length < 20){
-            this._inventory.push(product);
-            this._order(this._inventory);            
+        if (this._start == null){
+            this._start = product;
         }
-        else {
-            return null;
-        }
-    }
-
-    delete(code){
-        let pos = this._searchPosition(code);
-        if(pos > -1){
-            for(let i = pos; i < this._inventory.length - 1; i++){
-                this._inventory[i] = this._inventory[i + 1];
+        else if(this.search(product._getCode()) == null){
+            let aux = this._start;
+            while(aux._next != null){
+                aux = aux._next;
             }
-            this._inventory.pop();
+            aux._next = product;
         }
         else{
             return null;
         }
     }
 
+    delete(code){
+        let del = null;
+
+        if(code == this._start._getCode()){
+            del = this._start;
+            this._start = this._start._getNext();
+            del._setNext(null);
+            return del;
+        }
+
+        let aux = this._start;
+        while(aux._getNext() != null){
+            if(aux._getNext()._getCode() == code){
+                del = aux._getNext();
+                aux._setNext(aux._getNext()._getNext());
+                del._setNext(null);
+                return del;
+            }
+            else{
+                aux = aux._getNext();
+            }
+            return null;
+        }
+    }
+
     search(code){
-        for(let i = 0; i < this._inventory.length; i++){
-            if(code == this._inventory[i]._getCode()){
-                return this._inventory[i];
+        let aux = this._start;
+        while(aux != null){
+            if(aux._getCode() == code){
+                return aux;
+            }
+            else{
+                aux = aux._getNext();
             }
         }
-        return null; 
+        return null;
     }
 
     list(){
-        return this._inventory;
+        return this._start;
     }
 
     invertList(){
-        for(let i = 0, x = this._inventory.length - 1; i < this._inventory.length/2; i++, x--){
-            let var1 = this._inventory[i];
-            let var2 = this._inventory[x];
+        let aux = null;
+        let aux2 = null;
 
-            this._inventory[i] = var2;
-            this._inventory[x] = var1;
+        while(this._start != null){
+            aux2 = this._start._getNext();
+            this._start._setNext(aux);
+            aux = this._start;
+            this._start = aux2;
         }
-        return this._inventory;
+
+        return this._start = aux;
     }
 
-    _searchPosition(code){
-        if(this.search(code) != null){
-            for(let i = 0; i <= this._inventory.length; i++){
-                if(this._inventory[i]._getCode() == code){
-                    return i;
-                }
-            }
+    insert(product, position){
+        if(position == 1){
+            product._setNext(this._start);
+            this._start = product;
+            return this._start;
         }
-        return -1;
+
+        let aux = this._start;
+        let count = 2;
+
+        while(aux){
+            if(count == position){
+                product._setNext(aux._getNext());
+                aux._setNext(product);
+                return this._start;
+            }
+
+            aux = aux._getNext();
+            count++;
+        }
+
+    return null;
     }
 
-    _order(items){
-        let length = items.length;  
-            for (let i = 0; i < length; i++) { 
-                for (let j = 0; j < (length - i - 1); j++) { 
-                        if(items[j]._getCode() > items[j+1]._getCode()) {
-                                let tmp = items[j]; 
-                                items[j] = items[j+1]; 
-                                items[j+1] = tmp; 
-                    }
-                }        
-            }
-    }
+
 }

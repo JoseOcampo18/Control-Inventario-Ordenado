@@ -22,6 +22,9 @@ class App{
 
         let btnInvert = document.getElementById('btnInvertList');
         btnInvert.addEventListener('click',this._invertProduct);
+
+        let btnInsert = document.getElementById('btnInsert');
+        btnInsert.addEventListener('click', this._insertProduct);
     }
 
     _addProduct = () => {
@@ -36,6 +39,22 @@ class App{
 
         if(result === null){
             window.alert("Este producto ya existe, o tu inventario está lleno");
+        }
+    }
+
+    _insertProduct = () =>{
+        let code = document.getElementById('txtCode').value; 
+        let name = document.getElementById('txtName').value; 
+        let quantity = document.getElementById('txtQuantity').value; 
+        let cost = document.getElementById('txtCost').value;
+        let position = document.getElementById('txtPosition').value;
+
+        let product = new Product(code, name, quantity, cost);
+        let result = this._inventory.insert(product, position);
+        this._interfaz._listProduct(this._inventory);
+
+        if(result === null){
+            window.alert("Este producto ya existe, o está posición no existe");
         }
     }
 
